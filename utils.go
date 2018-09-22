@@ -26,16 +26,6 @@ func isEverythingNil(list []string) bool {
 	return false
 }
 
-func isAnythingNil(list []string) bool {
-	for _, v := range list {
-		if v == "" {
-			return true
-		}
-	}
-
-	return false
-}
-
 func del(list []string, index int) []string {
 	n := []string{}
 	for i, v := range list {

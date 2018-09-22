@@ -70,19 +70,24 @@ func main() {
 		"tid",
 	})
 
+	if len(args) != 5 {
+		printHelpAndExit()
+	}
+
 	if !fileExists(args["nso"]) {
 		fmt.Printf("error: the file at %s does not exist!\n", args["nso"])
 		os.Exit(1)
-	} /* else if !fileExists(args["icon"]) {
-		fmt.Printf("error: the file at %s does not exist!", args["icon"])
+	} else if args["icon"] != "none" && !fileExists(args["icon"]) {
+		fmt.Printf("error: the file at %s does not exist!\n", args["icon"])
 		os.Exit(1)
-	} */
+	}
 
 	if !isHex(args["tid"]) {
 		fmt.Printf("error: the title id %s is not valid hex!\n", args["tid"])
 		os.Exit(1)
 	} else if len(args["tid"]) != 16 {
 		fmt.Printf("error: the title id %s is not 16 characters!\n", args["tid"])
+		os.Exit(1)
 	}
 
 	err := os.MkdirAll("build/", 0700)
@@ -149,9 +154,5 @@ func main() {
 		"build/npdmtool.exe")
 	if err != nil {
 		panic(err)
-	}
-
-	if isAnythingNil(mapToSlice(args)) {
-		printHelpAndExit()
 	}
 }
