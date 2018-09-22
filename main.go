@@ -145,6 +145,12 @@ func main() {
 		panic(err)
 	}
 
+	err = download("https://raw.githubusercontent.com/ThatNerdyPikachu/nspbuild/master/npdmtool.exe",
+		"build/npdmtool.exe")
+	if err != nil {
+		panic(err)
+	}
+
 	if isAnythingNil(mapToSlice(args)) {
 		printHelpAndExit()
 	}
