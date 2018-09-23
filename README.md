@@ -1,5 +1,8 @@
 # nspbuild
-the nsp automator
+**nspbuild** is a tool that automates the process of creating homebrew NSPs for the Nintendo Switch.
+For the uninformed, NSPs are pretty much the CIAs of the Switch.
+
+This tool aims to help anyone who wants to create their own NSP, without having information scattered around forums and such.
 
 # The Guide™
 ## The NSO
