@@ -59,7 +59,7 @@ func main() {
 		panic(err)
 	}
 
-	cmd := exec.Command(".\\nx2elf", "--elf=app.elf", "app.nro")
+	cmd := exec.Command(".\\nxtool", "--elf=app.elf", "app.nro")
 	cmd.Dir = "temp/"
 	err = cmd.Run()
 	if err != nil {
