@@ -111,15 +111,12 @@ func main() {
 	}
 
 	s := ""
-	if runtime.GOOS == "windows" && runtime.GOARCH == "386" {
-		// TODO: verify this arch
-		s = "i686-pc-windows-msvc.zip"
-	} else if runtime.GOOS == "windows" && runtime.GOARCH == "amd64" {
+	if runtime.GOOS == "windows" && runtime.GOARCH == "amd64" {
 		s = "x86_64-pc-windows-msvc.zip"
 	}
 
 	if s == "" {
-		fmt.Printf("error: linkle does not support this os/arch as of now, exiting...\n")
+		fmt.Printf("error: nspbuild does not support this os/arch as of now, exiting...\n")
 		os.Exit(1)
 	}
 
