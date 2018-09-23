@@ -130,6 +130,7 @@ func download(url, output string) error {
 	if err != nil {
 		return err
 	}
+	defer out.Close()
 
 	in := bytes.NewReader(body)
 
@@ -137,8 +138,6 @@ func download(url, output string) error {
 	if err != nil {
 		return err
 	}
-
-	out.Close()
 
 	return nil
 }
@@ -148,6 +147,7 @@ func unzip(in, file, out string) error {
 	if err != nil {
 		return err
 	}
+	defer files.Close()
 
 	for _, v := range files.File {
 		if v.Name == file {
