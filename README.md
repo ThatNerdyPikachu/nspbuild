@@ -13,6 +13,7 @@ Let's say we want to create an NSP of [Checkpoint](https://github.com/FlagBrew/C
 
 ## The Icon
 (You can skip this step by specifying ``none`` as the icon, but who wants that? Nevertheless, you can do this if you'd like.)
+
 Time to get out your MS Paint skills, let's get designing! For this, you'll need a 256x256 JPEG with **zero exif data**
 
 To make sure your image has zero exif data, open it with your favorite image editor, save it as a BMP, open that BMP, then resave it as a JPEG.
