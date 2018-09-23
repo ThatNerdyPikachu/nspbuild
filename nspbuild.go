@@ -137,7 +137,7 @@ func main() {
 		panic(err)
 	}
 
-	err = unzip("build/linkle.zip", "linkle.exe", "build/linkle.exe")
+	err = unzipFile("build/linkle.zip", "linkle.exe", "build/linkle.exe")
 	if err != nil {
 		panic(err)
 	}
@@ -152,7 +152,7 @@ func main() {
 		panic(err)
 	}
 
-	err = unzip("build/hbp.zip", "hacbrewpack.exe", "build/hbp.exe")
+	err = unzipFile("build/hbp.zip", "hacbrewpack.exe", "build/hbp.exe")
 	if err != nil {
 		panic(err)
 	}
