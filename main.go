@@ -212,7 +212,7 @@ func main() {
 	gen := Nacp{
 		Name:    args["name"],
 		Author:  args["author"],
-		Version: args["author"],
+		Version: args["version"],
 		TitleID: strings.ToLower(args["tid"]),
 	}
 
