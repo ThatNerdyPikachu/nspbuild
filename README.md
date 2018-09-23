@@ -21,7 +21,6 @@ To make sure your image has zero exif data, open it with your favorite image edi
 ## Actually creating our NSP
 Sweet, we're almost done! Here's the final step, actually building our NSP! What we want to do now is download the [latest release](https://github.com/ThatNerdyPikachu/nspbuild/releases/latest) of nspbuild, and put it in a folder with our NSO and our icon. For this example, let's say our icon is named ``icon.jpg``, and our NSO is named ``Checkpoint.nso``. When we run the program with zero arguments, we get a help message:
 ```
-nspbuild v0.1 by Pika
 usage: nspbuild <path/to/nso> <name> <author> <version> <path/to/icon/jpg> <tid>
 ```
 
