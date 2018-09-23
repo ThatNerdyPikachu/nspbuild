@@ -142,7 +142,7 @@ func download(url, output string) error {
 	return nil
 }
 
-func unzip(in, file, out string) error {
+func unzipFile(in, file, out string) error {
 	files, err := zip.OpenReader(in)
 	if err != nil {
 		return err

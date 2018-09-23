@@ -140,7 +140,7 @@ func main() {
 		panic(err)
 	}
 
-	err = unzipFile("build/linkle.zip", "linkle.exe", "build/linkle.exe")
+	err = unzip("build/linkle.zip", "linkle.exe", "build/linkle.exe")
 	if err != nil {
 		panic(err)
 	}
@@ -155,12 +155,12 @@ func main() {
 		panic(err)
 	}
 
-	err = unzipFile("build/hbp.zip", "hacbrewpack.exe", "build/hbp.exe")
+	err = unzip("build/hbp.zip", "hacbrewpack.exe", "build/hbp.exe")
 	if err != nil {
 		panic(err)
 	}
 
-	err = download("https://raw.githubusercontent.com/ThatNerdyPikachu/nspbuild/master/binaries/npdmtool.exe",
+	err = download("https://raw.githubusercontent.com/ThatNerdyPikachu/nspbuild/master/npdmtool.exe",
 		"build/npdmtool.exe")
 	if err != nil {
 		panic(err)
