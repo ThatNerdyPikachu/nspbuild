@@ -49,7 +49,7 @@ func main() {
 	}
 
 	err = download("https://raw.githubusercontent.com/ThatNerdyPikachu/nspbuild/master/binaries/nx2elf.exe",
-		"temp/nx2elf.exe")
+		"temp/nxtool.exe")
 	if err != nil {
 		panic(err)
 	}
@@ -59,7 +59,7 @@ func main() {
 		panic(err)
 	}
 
-	cmd := exec.Command(".\\nx2elf", "app.nro", "app.elf")
+	cmd := exec.Command(".\\nx2elf", "--elf=app.elf", "app.nro")
 	cmd.Dir = "temp/"
 	err = cmd.Run()
 	if err != nil {
