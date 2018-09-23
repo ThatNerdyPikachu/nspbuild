@@ -1,11 +1,13 @@
 package main
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
+	"os/exec"
 	"runtime"
 	"strings"
 )
@@ -22,10 +24,17 @@ type Asset struct {
 	URL string `json:"browser_download_url"`
 }
 
+type Nacp struct {
+	Name    string `json:"name"`
+	Author  string `json:"author"`
+	Version string `json:"version"`
+	TitleID string `json:"title_id"`
+}
+
 func printHelpAndExit() {
 	lines := []string{
 		fmt.Sprintf("nspbuild v%s by Pika", VERSION),
-		"usage: nspbuild <path/to/nso> <name> <author> <path/to/icon/jpg> <tid>",
+		"usage: nspbuild <path/to/nso> <name> <author> <version> <path/to/icon/jpg> <tid>",
 	}
 
 	for _, v := range lines {
@@ -66,11 +75,12 @@ func main() {
 		"nso",
 		"name",
 		"author",
+		"version",
 		"icon",
 		"tid",
 	})
 
-	if len(args) != 5 {
+	if len(args) != 6 {
 		printHelpAndExit()
 	}
 
@@ -152,6 +162,138 @@ func main() {
 
 	err = download("https://raw.githubusercontent.com/ThatNerdyPikachu/nspbuild/master/npdmtool.exe",
 		"build/npdmtool.exe")
+	if err != nil {
+		panic(err)
+	}
+
+	err = os.MkdirAll("build/exefs", 0700)
+	if err != nil {
+		panic(err)
+	}
+
+	err = copy(args["nso"], "build/exefs/main")
+	if err != nil {
+		panic(err)
+	}
+
+	err = download("https://raw.githubusercontent.com/switchbrew/nx-hbloader/master/hbl.json", "build/npdm.temp")
+	if err != nil {
+		panic(err)
+	}
+
+	temp, err := os.Open("build/npdm.temp")
+	if err != nil {
+		panic(err)
+	}
+
+	npdm, err := os.Create("build/npdm.json")
+	if err != nil {
+		panic(err)
+	}
+
+	scanner := bufio.NewScanner(temp)
+
+	replacer := strings.NewReplacer("hbloader", args["name"], "0x010000000000100D", "0x"+strings.ToLower(args["tid"]))
+
+	for scanner.Scan() {
+		npdm.WriteString(replacer.Replace(scanner.Text()) + "\n")
+	}
+
+	temp.Close()
+	npdm.Close()
+
+	cmd := exec.Command(".\\npdmtool", "npdm.json", "exefs/main.npdm")
+	cmd.Dir = "build/"
+	err = cmd.Run()
+	if err != nil {
+		panic(err)
+	}
+
+	err = os.MkdirAll("build/control", 0700)
+	if err != nil {
+		panic(err)
+	}
+
+	gen := Nacp{
+		Name:    args["name"],
+		Author:  args["author"],
+		Version: args["author"],
+		TitleID: strings.ToLower(args["tid"]),
+	}
+
+	nacp, err := os.Create("build/nacp.json")
+	if err != nil {
+		panic(err)
+	}
+
+	j, err := json.Marshal(gen)
+	if err != nil {
+		panic(err)
+	}
+
+	nacp.WriteString(string(j))
+	nacp.Close()
+
+	cmd = exec.Command(".\\linkle", "nacp", "nacp.json", "control/control.nacp")
+	cmd.Dir = "build/"
+	err = cmd.Run()
+	if err != nil {
+		panic(err)
+	}
+
+	if args["icon"] != "none" {
+		languages := []string{
+			"Japanese",
+			"AmericanEnglish",
+			"French",
+			"German",
+			"Italian",
+			"Spanish",
+			"Chinese",
+			"Korean",
+			"Dutch",
+			"Portuguese",
+			"Russian",
+			"Taiwanese",
+			"BritishEnglish",
+			"CanadianFrench",
+			"LatinAmericanSpanish",
+			"SimplifiedChinese",
+			"TraditionalChinese",
+		}
+
+		for _, v := range languages {
+			err = copy(args["icon"], fmt.Sprintf("build/control/icon_%s.dat", v))
+			if err != nil {
+				panic(err)
+			}
+		}
+	}
+
+	err = copy("keys.txt", "build/keys.dat")
+	if err != nil {
+		panic(err)
+	}
+
+	cmd = exec.Command(".\\hbp", "--noromfs", "--nologo")
+	cmd.Dir = "build/"
+	err = cmd.Run()
+	if err != nil {
+		panic(err)
+	}
+
+	err = os.MkdirAll("out/", 0700)
+	if err != nil {
+		panic(err)
+	}
+
+	err = copy(fmt.Sprintf("build/hacbrewpack_nsp/%s.nsp", strings.ToLower(args["tid"])),
+		fmt.Sprintf("out/%s [%s].nsp", args["name"], strings.ToLower(args["tid"])))
+	if err != nil {
+		panic(err)
+	}
+
+	err = os.RemoveAll("build/")
 	if err != nil {
 		panic(err)
 	}
