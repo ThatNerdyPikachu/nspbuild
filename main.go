@@ -176,12 +176,7 @@ func main() {
 		panic(err)
 	}
 
-	err = download("https://raw.githubusercontent.com/switchbrew/nx-hbloader/master/hbl.json", "build/npdm.temp")
-	if err != nil {
-		panic(err)
-	}
-
-	temp, err := os.Open("build/npdm.temp")
+	resp, err := http.Get("https://raw.githubusercontent.com/switchbrew/nx-hbloader/master/hbl.json")
 	if err != nil {
 		panic(err)
 	}
@@ -191,7 +186,7 @@ func main() {
 		panic(err)
 	}
 
-	scanner := bufio.NewScanner(temp)
+	scanner := bufio.NewScanner(resp.Body)
 
 	replacer := strings.NewReplacer("hbloader", args["name"], "0x010000000000100D", "0x"+strings.ToLower(args["tid"]))
 
@@ -199,7 +194,7 @@ func main() {
 		npdm.WriteString(replacer.Replace(scanner.Text()) + "\n")
 	}
 
-	temp.Close()
+	resp.Body.Close()
 	npdm.Close()
 
 	cmd := exec.Command(".\\npdmtool", "npdm.json", "exefs/main.npdm")
