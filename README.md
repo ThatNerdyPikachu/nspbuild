@@ -5,6 +5,9 @@ For the uninformed, NSPs are pretty much the CIAs (installable titles) of the Sw
 This tool aims to help anyone who wants to create their own NSP, without having information scattered around forums and such.
 
 # The Guide™
+
+**Note: To follow this guide, you'll need a populated keys.txt in the same directory as nspbuild**
+
 ## The NSO
 Let's say we want to create an NSP of [Checkpoint](https://github.com/FlagBrew/Checkpoint) by [Bernardo Giordano](https://github.com/BernardoGiordano). First, we'd ``git clone`` it, then compile it. We'll get a few files, but the one we're interested in is the ``.nso`` file. We can keep that in a safe place, feel free to delete everything else.
 
