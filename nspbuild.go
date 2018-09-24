@@ -16,15 +16,15 @@ const (
 	VERSION = "1.0"
 )
 
-type Release struct {
-	Assets []Asset `json:"assets"`
+type release struct {
+	Assets []asset `json:"assets"`
 }
 
-type Asset struct {
+type asset struct {
 	URL string `json:"browser_download_url"`
 }
 
-type Nacp struct {
+type nacp struct {
 	Name    string `json:"name"`
 	Author  string `json:"author"`
 	Version string `json:"version"`
@@ -44,22 +44,22 @@ func printHelpAndExit() {
 	os.Exit(0)
 }
 
-func getRelease(repo string) (Release, error) {
+func getRelease(repo string) (release, error) {
 	resp, err := http.Get(fmt.Sprintf("https://api.github.com/repos/%s/releases/latest", repo))
 	if err != nil {
-		return Release{}, err
+		return release{}, err
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return Release{}, err
+		return release{}, err
 	}
 	resp.Body.Close()
 
-	r := Release{}
+	r := release{}
 	err = json.Unmarshal(body, &r)
 	if err != nil {
-		return Release{}, err
+		return release{}, err
 	}
 
 	return r, nil
@@ -168,7 +168,7 @@ func main() {
 
 	chkErr(os.MkdirAll("build/control", 0700))
 
-	gen := Nacp{
+	gen := nacp{
 		Name:    args["name"],
 		Author:  args["author"],
 		Version: args["version"],
