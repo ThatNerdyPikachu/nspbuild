@@ -15,7 +15,7 @@ func isEverythingNil(list []string) bool {
 	nils := 0
 	for _, v := range list {
 		if v == "" {
-			nils += 1
+			nils++
 		}
 	}
 
@@ -83,14 +83,19 @@ func fileExists(f string) bool {
 	_, err := os.Stat(f)
 	if err == nil {
 		return true
-	} else {
-		return false
 	}
+	return false
 }
 
 func isHex(s string) bool {
 	r := regexp.MustCompile("\\A\\b[0-9a-fA-F]+\\b")
 	return r.MatchString(s)
+}
+
+func chkErr(e error) {
+	if e != nil {
+		panic(e)
+	}
 }
 
 func copy(src, dst string) error {
