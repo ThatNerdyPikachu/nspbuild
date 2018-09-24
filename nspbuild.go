@@ -100,15 +100,10 @@ func main() {
 		os.Exit(1)
 	}
 
-	err := os.MkdirAll("build/", 0700)
-	if err != nil {
-		panic(err)
-	}
+	chkErr(os.MkdirAll("build/", 0700))
 
 	linkle, err := getRelease("MegatonHammer/linkle")
-	if err != nil {
-		panic(err)
-	}
+	chkErr(err)
 
 	s := ""
 	if runtime.GOOS == "windows" && runtime.GOARCH == "amd64" {
@@ -132,56 +127,29 @@ func main() {
 		os.Exit(1)
 	}
 
-	err = download(url, "build/linkle.zip")
-	if err != nil {
-		panic(err)
-	}
+	chkErr(download(url, "build/linkle.zip"))
 
-	err = unzipFile("build/linkle.zip", "linkle.exe", "build/linkle.exe")
-	if err != nil {
-		panic(err)
-	}
+	chkErr(unzipFile("build/linkle.zip", "linkle.exe", "build/linkle.exe"))
 
 	hbp, err := getRelease("The-4n/hacBrewPack")
-	if err != nil {
-		panic(err)
-	}
+	chkErr(err)
 
-	err = download(hbp.Assets[0].URL, "build/hbp.zip")
-	if err != nil {
-		panic(err)
-	}
+	chkErr(download(hbp.Assets[0].URL, "build/hbp.zip"))
 
-	err = unzipFile("build/hbp.zip", "hacbrewpack.exe", "build/hbp.exe")
-	if err != nil {
-		panic(err)
-	}
+	chkErr(unzipFile("build/hbp.zip", "hacbrewpack.exe", "build/hbp.exe"))
 
-	err = download("https://raw.githubusercontent.com/ThatNerdyPikachu/nspbuild/master/npdmtool.exe",
-		"build/npdmtool.exe")
-	if err != nil {
-		panic(err)
-	}
+	chkErr(download("https://raw.githubusercontent.com/ThatNerdyPikachu/nspbuild/master/npdmtool.exe",
+		"build/npdmtool.exe"))
 
-	err = os.MkdirAll("build/exefs", 0700)
-	if err != nil {
-		panic(err)
-	}
+	chkErr(os.MkdirAll("build/exefs", 0700))
 
-	err = copy(args["nso"], "build/exefs/main")
-	if err != nil {
-		panic(err)
-	}
+	chkErr(copy(args["nso"], "build/exefs/main"))
 
 	resp, err := http.Get("https://raw.githubusercontent.com/switchbrew/nx-hbloader/master/hbl.json")
-	if err != nil {
-		panic(err)
-	}
+	chkErr(err)
 
 	npdm, err := os.Create("build/npdm.json")
-	if err != nil {
-		panic(err)
-	}
+	chkErr(err)
 
 	scanner := bufio.NewScanner(resp.Body)
 
@@ -196,15 +164,9 @@ func main() {
 
 	cmd := exec.Command(".\\npdmtool", "npdm.json", "exefs/main.npdm")
 	cmd.Dir = "build/"
-	err = cmd.Run()
-	if err != nil {
-		panic(err)
-	}
+	chkErr(cmd.Run())
 
-	err = os.MkdirAll("build/control", 0700)
-	if err != nil {
-		panic(err)
-	}
+	chkErr(os.MkdirAll("build/control", 0700))
 
 	gen := Nacp{
 		Name:    args["name"],
@@ -214,24 +176,17 @@ func main() {
 	}
 
 	nacp, err := os.Create("build/nacp.json")
-	if err != nil {
-		panic(err)
-	}
+	chkErr(err)
 
 	j, err := json.Marshal(gen)
-	if err != nil {
-		panic(err)
-	}
+	chkErr(err)
 
 	nacp.WriteString(string(j))
 	nacp.Close()
 
 	cmd = exec.Command(".\\linkle", "nacp", "nacp.json", "control/control.nacp")
 	cmd.Dir = "build/"
-	err = cmd.Run()
-	if err != nil {
-		panic(err)
-	}
+	chkErr(cmd.Run())
 
 	if args["icon"] != "none" {
 		languages := []string{
@@ -255,38 +210,20 @@ func main() {
 		}
 
 		for _, v := range languages {
-			err = copy(args["icon"], fmt.Sprintf("build/control/icon_%s.dat", v))
-			if err != nil {
-				panic(err)
-			}
+			chkErr(copy(args["icon"], fmt.Sprintf("build/control/icon_%s.dat", v)))
 		}
 	}
 
-	err = copy("keys.txt", "build/keys.dat")
-	if err != nil {
-		panic(err)
-	}
+	chkErr(copy("keys.txt", "build/keys.dat"))
 
 	cmd = exec.Command(".\\hbp", "--noromfs", "--nologo")
 	cmd.Dir = "build/"
-	err = cmd.Run()
-	if err != nil {
-		panic(err)
-	}
+	chkErr(cmd.Run())
 
-	err = os.MkdirAll("out/", 0700)
-	if err != nil {
-		panic(err)
-	}
+	chkErr(os.MkdirAll("out/", 0700))
 
-	err = copy(fmt.Sprintf("build/hacbrewpack_nsp/%s.nsp", strings.ToLower(args["tid"])),
-		fmt.Sprintf("out/%s [%s].nsp", args["name"], strings.ToLower(args["tid"])))
-	if err != nil {
-		panic(err)
-	}
+	chkErr(copy(fmt.Sprintf("build/hacbrewpack_nsp/%s.nsp", strings.ToLower(args["tid"])),
+		fmt.Sprintf("out/%s [%s].nsp", args["name"], strings.ToLower(args["tid"]))))
 
-	err = os.RemoveAll("build/")
-	if err != nil {
-		panic(err)
-	}
+	chkErr(os.RemoveAll("build/"))
 }
