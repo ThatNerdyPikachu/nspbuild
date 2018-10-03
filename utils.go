@@ -98,7 +98,7 @@ func chkErr(e error) {
 	}
 }
 
-func copy(src, dst string) error {
+func copyFile(src, dst string) error {
 	source, err := os.Open(src)
 	if err != nil {
 		return err
