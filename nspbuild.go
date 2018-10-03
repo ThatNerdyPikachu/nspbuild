@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
-	"runtime"
 	"strings"
 )
 
@@ -29,7 +28,7 @@ type nacp struct {
 
 func printHelpAndExit() {
 	fmt.Printf("usage: nspbuild <path/to/nso> <name> <author> <version> <path/to/icon/jpg> <tid>")
-	
+
 	os.Exit(0)
 }
 
