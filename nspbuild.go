@@ -94,26 +94,11 @@ func main() {
 	linkle, err := getRelease("MegatonHammer/linkle")
 	chkErr(err)
 
-	s := ""
-	if runtime.GOOS == "windows" && runtime.GOARCH == "amd64" {
-		s = "x86_64-pc-windows-msvc.zip"
-	}
-
-	if s == "" {
-		fmt.Printf("error: nspbuild does not support this os/arch as of now, exiting...\n")
-		os.Exit(1)
-	}
-
 	url := ""
 	for _, v := range linkle.Assets {
-		if strings.HasSuffix(v.URL, s) {
+		if strings.HasSuffix(v.URL, "x86_64-pc-windows-msvc.zip") {
 			url = v.URL
 		}
-	}
-
-	if url == "" {
-		fmt.Printf("error: could not find a linke build for your os/arch, exiting...\n")
-		os.Exit(1)
 	}
 
 	chkErr(download(url, "build/linkle.zip"))
