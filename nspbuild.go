@@ -134,7 +134,7 @@ func main() {
 	hbp, err := getRelease("The-4n/hacBrewPack")
 	chkErr(err)
 
-	chkErr(download(hbp.Assets[0].URL, "build/hbp.zip"))
+	chkErr(download(hbp.Assets[1].URL, "build/hbp.zip"))
 
 	chkErr(unzipFile("build/hbp.zip", "hacbrewpack.exe", "build/hbp.exe"))
 
