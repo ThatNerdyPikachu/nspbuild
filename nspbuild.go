@@ -12,10 +12,6 @@ import (
 	"strings"
 )
 
-const (
-	VERSION = "1.0"
-)
-
 type release struct {
 	Assets []asset `json:"assets"`
 }
@@ -32,15 +28,8 @@ type nacp struct {
 }
 
 func printHelpAndExit() {
-	lines := []string{
-		fmt.Sprintf("nspbuild v%s by Pika", VERSION),
-		"usage: nspbuild <path/to/nso> <name> <author> <version> <path/to/icon/jpg> <tid>",
-	}
-
-	for _, v := range lines {
-		fmt.Printf("%s\n", v)
-	}
-
+	fmt.Printf("usage: nspbuild <path/to/nso> <name> <author> <version> <path/to/icon/jpg> <tid>")
+	
 	os.Exit(0)
 }
 
