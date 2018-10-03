@@ -143,7 +143,7 @@ func main() {
 
 	chkErr(os.MkdirAll("build/exefs", 0700))
 
-	chkErr(copy(args["nso"], "build/exefs/main"))
+	chkErr(copyFile(args["nso"], "build/exefs/main"))
 
 	resp, err := http.Get("https://raw.githubusercontent.com/switchbrew/nx-hbloader/master/hbl.json")
 	chkErr(err)
@@ -210,11 +210,11 @@ func main() {
 		}
 
 		for _, v := range languages {
-			chkErr(copy(args["icon"], fmt.Sprintf("build/control/icon_%s.dat", v)))
+			chkErr(copyFile(args["icon"], fmt.Sprintf("build/control/icon_%s.dat", v)))
 		}
 	}
 
-	chkErr(copy("keys.txt", "build/keys.dat"))
+	chkErr(copyFile("keys.txt", "build/keys.dat"))
 
 	cmd = exec.Command(".\\hbp", "--noromfs", "--nologo")
 	cmd.Dir = "build/"
@@ -222,7 +222,7 @@ func main() {
 
 	chkErr(os.MkdirAll("out/", 0700))
 
-	chkErr(copy(fmt.Sprintf("build/hacbrewpack_nsp/%s.nsp", strings.ToLower(args["tid"])),
+	chkErr(copyFile(fmt.Sprintf("build/hacbrewpack_nsp/%s.nsp", strings.ToLower(args["tid"])),
 		fmt.Sprintf("out/%s [%s].nsp", args["name"], strings.ToLower(args["tid"]))))
 
 	chkErr(os.RemoveAll("build/"))
