@@ -2,9 +2,7 @@ package main
 
 import (
 	"archive/zip"
-	"bytes"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"regexp"
@@ -124,12 +122,7 @@ func download(url, output string) error {
 	if err != nil {
 		return err
 	}
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return err
-	}
-	resp.Body.Close()
+	defer resp.Body.Close()
 
 	out, err := os.Create(output)
 	if err != nil {
@@ -137,9 +130,7 @@ func download(url, output string) error {
 	}
 	defer out.Close()
 
-	in := bytes.NewReader(body)
-
-	_, err = io.Copy(out, in)
+	_, err = io.Copy(out, resp.Body)
 	if err != nil {
 		return err
 	}
