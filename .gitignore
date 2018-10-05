@@ -1,7 +1,3 @@
-build/
-nx-hbloader/
 out/
-hbl.nso
-icon.jpg
 keys.txt
 nspbuild.exe
