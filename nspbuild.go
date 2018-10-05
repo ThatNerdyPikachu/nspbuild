@@ -27,7 +27,7 @@ type nacp struct {
 }
 
 func printHelpAndExit() {
-	fmt.Printf("usage: nspbuild <path/to/nso> <name> <author> <version> <path/to/icon/jpg> <tid>")
+	fmt.Printf("usage: nspbuild <path/to/nso> <name> <author> <version> <path/to/icon/jpg> <tid>\n")
 
 	os.Exit(0)
 }
