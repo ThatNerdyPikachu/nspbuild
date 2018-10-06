@@ -142,10 +142,10 @@ func main() {
 	chkErr(os.MkdirAll("build/control", 0700))
 
 	gen := nacp{
-		Name:    args["name"],
-		Author:  args["author"],
-		Version: args["version"],
-		TitleID: strings.ToLower(args["tid"]),
+		args["name"],
+		args["author"],
+		args["version"],
+		strings.ToLower(args["tid"]),
 	}
 
 	nacp, err := os.Create("build/nacp.json")
