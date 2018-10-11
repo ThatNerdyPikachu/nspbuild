@@ -27,10 +27,9 @@ func isEverythingNil(list []string) bool {
 func del(list []string, index int) []string {
 	n := []string{}
 	for i, v := range list {
-		if i == index {
-			continue
+		if i != index {
+			n = append(n, v)
 		}
-		n = append(n, v)
 	}
 
 	return n
