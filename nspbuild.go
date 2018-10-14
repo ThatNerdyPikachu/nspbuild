@@ -196,7 +196,7 @@ func main() {
 	chkErr(os.MkdirAll("out/", 0700))
 
 	chkErr(copyFile(fmt.Sprintf("build/hacbrewpack_nsp/%s.nsp", strings.ToLower(args["tid"])),
-		fmt.Sprintf("out/%s [%s].nsp", args["name"], strings.ToLower(args["tid"]))))
+		fmt.Sprintf("out/%s.nsp", args["name"])))
 
 	chkErr(os.RemoveAll("build/"))
 }
