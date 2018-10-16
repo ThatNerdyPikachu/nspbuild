@@ -32,22 +32,22 @@ func printHelpAndExit() {
 	os.Exit(0)
 }
 
-func getRelease(repo string) (release, error) {
+func getRelease(repo string) (*release, error) {
 	resp, err := http.Get(fmt.Sprintf("https://api.github.com/repos/%s/releases/latest", repo))
 	if err != nil {
-		return release{}, err
+		return nil, err
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return release{}, err
+		return nil, err
 	}
 	resp.Body.Close()
 
-	r := release{}
-	err = json.Unmarshal(body, &r)
+	r := &release{}
+	err = json.Unmarshal(body, r)
 	if err != nil {
-		return release{}, err
+		return nil, err
 	}
 
 	return r, nil
