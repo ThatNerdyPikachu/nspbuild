@@ -126,7 +126,8 @@ func main() {
 
 	scanner := bufio.NewScanner(resp.Body)
 
-	replacer := strings.NewReplacer("hbloader", args["name"], "0x010000000000100D", "0x"+strings.ToLower(args["tid"]))
+	replacer := strings.NewReplacer("hbloader", args["name"], "0x010000000000100D",
+		"0x"+strings.ToLower(args["tid"]), "\"application_type\"   : 2", "\"application_type\"   : 0")
 
 	for scanner.Scan() {
 		npdm.WriteString(replacer.Replace(scanner.Text()) + "\n")
