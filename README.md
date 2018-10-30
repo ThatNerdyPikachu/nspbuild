@@ -37,7 +37,7 @@ If you're having any issues with the program, join my [Discord server](https://i
 # Credits
 None of this wouldn't have been possible without these amazing people!
 ```
-The-4n, for creating hacBuildPack
+The-4n, for creating hacBrewPack
 roblabla, for creating linkle
 switchbrew, for creating switch-tools, and subsequently npdmtool
 The Golang Authors, for creating such an amazing language!
