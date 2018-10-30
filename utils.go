@@ -84,8 +84,8 @@ func fileExists(f string) bool {
 	return false
 }
 
-func isHex(hexa string) bool {
-	_, err := strconv.ParseUint(hexa, 16, 64)
+func isHex(s string) bool {
+	_, err := strconv.ParseUint(s, 16, 64)
 	if err != nil {
 		return false
 	}
