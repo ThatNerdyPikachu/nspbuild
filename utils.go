@@ -5,7 +5,7 @@ import (
 	"io"
 	"net/http"
 	"os"
-	"strconv"
+	"regexp"
 	"strings"
 )
 
@@ -85,11 +85,8 @@ func fileExists(f string) bool {
 }
 
 func isHex(s string) bool {
-	_, err := strconv.ParseUint(s, 16, 64)
-	if err != nil {
-		return false
-	}
-	return true
+	r := regexp.MustCompile("\\A\\b[0-9a-fA-F]+\\b")
+	return r.MatchString(s)
 }
 
 func chkErr(e error) {
