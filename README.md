@@ -29,7 +29,7 @@ So, that's exactly what we'll specify!
 nspbuild Checkpoint.nso Checkpoint "Bernardo Giordano" 3.4.2 icon.jpg 01005791048912af
 ```
 
-Once it's done, we should see a new folder called ``out/``! In it, what's this? ``Checkpoint [01005791048912af].nsp``!
+Once it's done, we should see a new folder called ``out/``! In it, what's this? ``Checkpoint.nsp``!
 
 # Troubleshooting
 If you're having any issues with the program, join my [Discord server](https://invite.gg/pika) and ask for help! We'll be happy to assist you!
@@ -37,7 +37,7 @@ If you're having any issues with the program, join my [Discord server](https://i
 # Credits
 None of this wouldn't have been possible without these amazing people!
 ```
-The-4n, for creating hacBuildPack
+The-4n, for creating hacBrewPack
 roblabla, for creating linkle
 switchbrew, for creating switch-tools, and subsequently npdmtool
 The Golang Authors, for creating such an amazing language!
