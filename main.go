@@ -90,29 +90,38 @@ func main() {
 
 	chkErr(os.MkdirAll("build/", 0700))
 
-	linkle, err := getRelease("MegatonHammer/linkle")
-	chkErr(err)
+	// Only download if file not exist
+	if !fileExists("build/linkle.exe") {
+		linkle, err := getRelease("MegatonHammer/linkle")
+		chkErr(err)
 
-	url := ""
-	for _, v := range linkle.Assets {
-		if strings.HasSuffix(v.URL, "x86_64-pc-windows-msvc.zip") {
-			url = v.URL
+		url := ""
+		for _, v := range linkle.Assets {
+			if strings.HasSuffix(v.URL, "x86_64-pc-windows-msvc.zip") {
+				url = v.URL
+			}
 		}
+
+		chkErr(download(url, "build/linkle.zip"))
+
+		chkErr(unzipFile("build/linkle.zip", "linkle.exe", "build/linkle.exe"))
 	}
 
-	chkErr(download(url, "build/linkle.zip"))
+	// Only download if file not exist
+	if !fileExists("build/hbp.exe") {
+		hbp, err := getRelease("The-4n/hacBrewPack")
+		chkErr(err)
 
-	chkErr(unzipFile("build/linkle.zip", "linkle.exe", "build/linkle.exe"))
+		chkErr(download(hbp.Assets[1].URL, "build/hbp.zip"))
 
-	hbp, err := getRelease("The-4n/hacBrewPack")
-	chkErr(err)
+		chkErr(unzipFile("build/hbp.zip", "hacbrewpack.exe", "build/hbp.exe"))
+	}
 
-	chkErr(download(hbp.Assets[1].URL, "build/hbp.zip"))
-
-	chkErr(unzipFile("build/hbp.zip", "hacbrewpack.exe", "build/hbp.exe"))
-
-	chkErr(download("https://raw.githubusercontent.com/ThatNerdyPikachu/nspbuild/master/npdmtool.exe",
-		"build/npdmtool.exe"))
+	// Only download if file not exist
+	if !fileExists("build/npdmtool.exe") {
+		chkErr(download("https://raw.githubusercontent.com/ThatNerdyPikachu/nspbuild/master/npdmtool.exe",
+			"build/npdmtool.exe"))
+	}
 
 	chkErr(os.MkdirAll("build/exefs", 0700))
 
