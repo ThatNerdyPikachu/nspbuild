@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -89,29 +90,38 @@ func main() {
 
 	chkErr(os.MkdirAll("build/", 0700))
 
-	linkle, err := getRelease("MegatonHammer/linkle")
-	chkErr(err)
+	// Only download if file not exist
+	if !fileExists("build/linkle.exe") {
+		linkle, err := getRelease("MegatonHammer/linkle")
+		chkErr(err)
 
-	url := ""
-	for _, v := range linkle.Assets {
-		if strings.HasSuffix(v.URL, "x86_64-pc-windows-msvc.zip") {
-			url = v.URL
+		url := ""
+		for _, v := range linkle.Assets {
+			if strings.HasSuffix(v.URL, "x86_64-pc-windows-msvc.zip") {
+				url = v.URL
+			}
 		}
+
+		chkErr(download(url, "build/linkle.zip"))
+
+		chkErr(unzipFile("build/linkle.zip", "linkle.exe", "build/linkle.exe"))
 	}
 
-	chkErr(download(url, "build/linkle.zip"))
+	// Only download if file not exist
+	if !fileExists("build/hbp.exe") {
+		hbp, err := getRelease("The-4n/hacBrewPack")
+		chkErr(err)
 
-	chkErr(unzipFile("build/linkle.zip", "linkle.exe", "build/linkle.exe"))
+		chkErr(download(hbp.Assets[1].URL, "build/hbp.zip"))
 
-	hbp, err := getRelease("The-4n/hacBrewPack")
-	chkErr(err)
+		chkErr(unzipFile("build/hbp.zip", "hacbrewpack.exe", "build/hbp.exe"))
+	}
 
-	chkErr(download(hbp.Assets[1].URL, "build/hbp.zip"))
-
-	chkErr(unzipFile("build/hbp.zip", "hacbrewpack.exe", "build/hbp.exe"))
-
-	chkErr(download("https://raw.githubusercontent.com/ThatNerdyPikachu/nspbuild/master/npdmtool.exe",
-		"build/npdmtool.exe"))
+	// Only download if file not exist
+	if !fileExists("build/npdmtool.exe") {
+		chkErr(download("https://raw.githubusercontent.com/ThatNerdyPikachu/nspbuild/master/npdmtool.exe",
+			"build/npdmtool.exe"))
+	}
 
 	chkErr(os.MkdirAll("build/exefs", 0700))
 
@@ -123,18 +133,16 @@ func main() {
 	npdm, err := os.Create("build/npdm.json")
 	chkErr(err)
 
+	scanner := bufio.NewScanner(resp.Body)
+
 	replacer := strings.NewReplacer("hbloader", args["name"], "0x010000000000100D",
 		"0x"+strings.ToLower(args["tid"]), "\"application_type\"   : 2", "\"application_type\"   : 1")
 
-	body, err := ioutil.ReadAll(resp.Body)
-	chkErr(err)
-	resp.Body.Close()
-
-	for _, v := range strings.Split(string(body), "\n") {
-		_, err = npdm.WriteString(replacer.Replace(v))
-		chkErr(err)
+	for scanner.Scan() {
+		npdm.WriteString(replacer.Replace(scanner.Text()) + "\n")
 	}
 
+	resp.Body.Close()
 	npdm.Close()
 
 	cmd := exec.Command(".\\npdmtool", "npdm.json", "exefs/main.npdm")
