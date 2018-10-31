@@ -2,9 +2,12 @@ package main
 
 import (
 	"archive/zip"
+	"bytes"
+	"fmt"
 	"io"
 	"net/http"
 	"os"
+	"os/exec"
 	"regexp"
 	"strings"
 )
@@ -93,6 +96,28 @@ func chkErr(e error) {
 	if e != nil {
 		panic(e)
 	}
+}
+
+func execCmd(name string, arg ...string) {
+	var stdout, stderr bytes.Buffer
+
+	cmd := exec.Command(name, arg...)
+	cmd.Dir = "build/"
+
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+
+	err := cmd.Run()
+
+	outStr, errStr := string(stdout.Bytes()), string(stderr.Bytes())
+	if outStr != "" {
+		fmt.Fprintf(os.Stdout, "%s\n", outStr)
+	}
+	if errStr != "" {
+		fmt.Fprintf(os.Stderr, "%s\n", errStr)
+	}
+
+	chkErr(err)
 }
 
 func copyFile(src, dst string) error {

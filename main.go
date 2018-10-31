@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-	"os/exec"
 	"strings"
 )
 
@@ -137,9 +136,7 @@ func main() {
 
 	npdm.Close()
 
-	cmd := exec.Command(".\\npdmtool", "npdm.json", "exefs/main.npdm")
-	cmd.Dir = "build/"
-	chkErr(cmd.Run())
+	execCmd(".\\npdmtool", "npdm.json", "exefs/main.npdm")
 
 	chkErr(os.MkdirAll("build/control", 0700))
 
@@ -159,9 +156,7 @@ func main() {
 	nacp.WriteString(string(j))
 	nacp.Close()
 
-	cmd = exec.Command(".\\linkle", "nacp", "nacp.json", "control/control.nacp")
-	cmd.Dir = "build/"
-	chkErr(cmd.Run())
+	execCmd(".\\linkle", "nacp", "nacp.json", "control/control.nacp")
 
 	if args["icon"] != "none" {
 		languages := []string{
@@ -191,9 +186,7 @@ func main() {
 
 	chkErr(copyFile("keys.txt", "build/keys.dat"))
 
-	cmd = exec.Command(".\\hbp", "--noromfs", "--nologo")
-	cmd.Dir = "build/"
-	chkErr(cmd.Run())
+	execCmd(".\\hbp", "--noromfs", "--nologo")
 
 	chkErr(os.MkdirAll("out/", 0700))
 
