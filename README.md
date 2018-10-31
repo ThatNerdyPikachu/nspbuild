@@ -1,3 +1,5 @@
+**this project has been discontinued for now, as nsps can ban you lol. (hbp is easy enough to use now tbh)**
+
 # nspbuild
 **nspbuild** is a tool that automates the process of creating homebrew NSPs for the Nintendo Switch.
 For the uninformed, NSPs are pretty much the CIAs (installable titles) of the Switch.
